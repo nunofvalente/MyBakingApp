@@ -8,7 +8,7 @@ public class Ingredient {
      * ingredient : Graham Cracker crumbs
      */
 
-    private int quantity;
+    private float quantity;
     private String measure;
     private String ingredient;
 
@@ -18,7 +18,7 @@ public class Ingredient {
         this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 

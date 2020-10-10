@@ -59,26 +59,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerClickList
    private void getRecipes() {
         Retrofit retrofit = RetrofitService.getRetrofit();
         WebService service = retrofit.create(WebService.class);
-        Call<String> call = service.getRecipes();
-        call.enqueue(new Callback<String>() {
+        Call<List<Recipe>> call = service.getRecipes();
+        call.enqueue(new Callback<List<Recipe>>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String recipeJSON = response.body();
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                List<Recipe> recipeJSON = response.body();
 
-                try {
-                    ArrayList<Recipe> mParsedRecipeList = JsonUtil.parseJSON(recipeJSON);
-                    mRecipeList.addAll(mParsedRecipeList);
-                    mAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, MainActivity.this);
-                    mBinding.recyclerRecipes.setAdapter(mAdapter);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+               // ArrayList<Recipe> mParsedRecipeList = JsonUtil.parseJSON(recipeJSON);
+                mRecipeList.addAll(recipeJSON);
+                mAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, MainActivity.this);
+                mBinding.recyclerRecipes.setAdapter(mAdapter);
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                t.getMessage();
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }
