@@ -7,23 +7,15 @@ import android.os.Bundle;
 
 import com.nunovalente.android.bakingapp.R;
 
-
-
-public class RecipeListActivity extends AppCompatActivity {
-
-    private final static String TAG = RecipeListActivity.class.getSimpleName();
+public class RecipeDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recipe_detail);
 
-        RecipeListFragment fragment = new RecipeListFragment(getApplicationContext());
+        RecipeDetailFragment detailFragment = new RecipeDetailFragment(getApplicationContext());
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.frame_recipe_list, fragment)
-                .commit();
-
-
+        fragmentManager.beginTransaction().add(R.id.frame_recipe_details, detailFragment).commit();
     }
-
-
 }
