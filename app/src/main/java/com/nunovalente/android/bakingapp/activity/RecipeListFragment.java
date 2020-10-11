@@ -1,6 +1,7 @@
 package com.nunovalente.android.bakingapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeListFragment extends Fragment implements RecyclerClickListener {
+
+    public final static String RECIPE_OBJECT = "recipe_object";
 
     private List<Recipe> mRecipeList = new ArrayList<>();
     private RecipeAdapter mAdapter;
@@ -62,8 +65,11 @@ public class RecipeListFragment extends Fragment implements RecyclerClickListene
         });
     }
 
-    @Override
-    public void onClick() {
-
+   @Override
+    public void onClick(int position) {
+        Recipe recipe = mRecipeList.get(position);
+        Intent intent = new Intent(context, RecipeDetailActivity.class);
+        intent.putExtra(RECIPE_OBJECT, recipe);
+        startActivity(intent);
     }
 }

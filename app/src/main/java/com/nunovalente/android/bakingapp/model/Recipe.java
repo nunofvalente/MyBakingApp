@@ -1,18 +1,18 @@
 package com.nunovalente.android.bakingapp.model;
 
-import android.content.ContentValues;
+import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.bumptech.glide.annotation.Excludes;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(tableName = "recipes")
-public class Recipe {
+public class Recipe implements Serializable {
 
     /**
      * id : 1

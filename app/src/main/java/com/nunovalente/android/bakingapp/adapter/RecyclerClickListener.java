@@ -2,5 +2,5 @@ package com.nunovalente.android.bakingapp.adapter;
 
 public interface RecyclerClickListener {
 
-    void onClick();
+    void onClick(int position);
 }

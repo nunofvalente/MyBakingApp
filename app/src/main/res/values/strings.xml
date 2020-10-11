@@ -3,4 +3,7 @@
     <string name="servings">Servings: </string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="instruction">Instruction:</string>
+    <string name="settings">Settings</string>
 </resources>

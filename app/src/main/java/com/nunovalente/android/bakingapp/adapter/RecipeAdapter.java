@@ -17,16 +17,11 @@ import com.nunovalente.android.bakingapp.model.Recipe;
 
 import java.util.List;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeViewHolder> implements RecyclerClickListener {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeViewHolder> {
 
-    List<Recipe> mRecipeList;
-    final RecyclerClickListener listener;
-    final Context context;
-
-    /*public void setRecipeData(List<Recipe> recipes) {
-        mRecipeList = recipes;
-        notifyDataSetChanged();
-    }*/
+    final private List<Recipe> mRecipeList;
+    final private RecyclerClickListener listener;
+    final private Context context;
 
     public RecipeAdapter(Context context, List<Recipe> mRecipeList, RecyclerClickListener listener) {
         this.context = context;
@@ -64,12 +59,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeVi
         return mRecipeList.size();
     }
 
-    @Override
-    public void onClick() {
-
-    }
-
-    public static class MyRecipeViewHolder extends RecyclerView.ViewHolder {
+    public class MyRecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final ImageView mRecipeImage;
         private final TextView mRecipeName, mRecipeServings;
@@ -80,6 +70,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeVi
             mRecipeImage = itemView.findViewById(R.id.image_recipe);
             mRecipeServings = itemView.findViewById(R.id.tv_number_servings);
             mRecipeName = itemView.findViewById(R.id.tv_recipe_name);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            listener.onClick(position);
         }
     }
 }

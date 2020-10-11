@@ -1,6 +1,8 @@
 package com.nunovalente.android.bakingapp.model;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
 
     /**
      * quantity : 2
@@ -40,5 +42,10 @@ public class Ingredient {
 
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
+    }
+
+    @Override
+    public String toString() {
+        return ingredient + " " + " " + quantity + measure;
     }
 }

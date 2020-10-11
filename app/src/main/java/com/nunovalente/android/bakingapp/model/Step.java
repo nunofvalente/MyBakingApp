@@ -1,6 +1,8 @@
 package com.nunovalente.android.bakingapp.model;
 
-public class Step {
+import java.io.Serializable;
+
+public class Step implements Serializable {
     /**
      * id : 0
      * shortDescription : Recipe Introduction
