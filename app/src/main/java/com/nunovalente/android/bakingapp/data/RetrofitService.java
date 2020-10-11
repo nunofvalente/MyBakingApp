@@ -21,4 +21,8 @@ public class RetrofitService {
     public static Retrofit getRetrofit() {
         return retrofit;
     }
+
+    public static WebService getInterface() {
+        return retrofit.create(WebService.class);
+    }
 }

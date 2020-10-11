@@ -1,5 +1,7 @@
 package com.nunovalente.android.bakingapp.data;
 
+import androidx.lifecycle.LiveData;
+
 import com.nunovalente.android.bakingapp.model.Recipe;
 
 import java.util.List;
