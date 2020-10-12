@@ -32,6 +32,9 @@ public class RecipeListFragment extends Fragment implements RecyclerClickListene
     private RecyclerView mRecyclerRecipeList;
     private Context context;
 
+    public RecipeListFragment() {
+    }
+
     public RecipeListFragment(Context context) {
         this.context = context;
     }

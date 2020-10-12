@@ -26,8 +26,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        loadFragment();
         getIntentData();
+
+        if(savedInstanceState != null) {
+            return;
+        } else {
+            loadFragment();
+        }
     }
 
     private void getIntentData() {
@@ -40,7 +45,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     private void loadFragment() {
-        RecipeDetailFragment detailFragment = new RecipeDetailFragment(getApplicationContext());
+        RecipeDetailFragment detailFragment = new RecipeDetailFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.frame_recipe_details, detailFragment).commit();
     }

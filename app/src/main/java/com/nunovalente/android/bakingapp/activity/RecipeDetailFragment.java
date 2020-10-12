@@ -25,6 +25,10 @@ import java.util.List;
 
 public class RecipeDetailFragment extends Fragment implements View.OnClickListener {
 
+    public final static String EXO_PLAYBACK_POSITION = "playback_position";
+    public final static String EXO_CURRENT_WINDOW = "exo_current_window";
+    public final static String RECIPE_STEP = "recipe_step_number";
+
     private Context context;
     private SimpleExoPlayer exoPlayer;
     private FragmentRecipeDetailsBinding mBinding;
@@ -40,9 +44,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public RecipeDetailFragment() {
     }
 
-    public RecipeDetailFragment(Context context) {
-        this.context = context;
-    }
+
 
     @Nullable
     @Override
@@ -54,15 +56,23 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
             mRecipe = activity.getRecipe();
         }
 
+        context = getActivity().getApplicationContext();
         steps = mRecipe.getSteps();
         ingredients = mRecipe.getIngredients();
+
+        if(savedInstanceState != null) {
+            playbackPosition = savedInstanceState.getLong(EXO_PLAYBACK_POSITION);
+            currentWindow = savedInstanceState.getInt(EXO_CURRENT_WINDOW);
+            loadIngredientsInfo();
+            stepNumber = savedInstanceState.getInt(RECIPE_STEP);
+        }
 
         setListeners();
 
         return mBinding.getRoot();
     }
 
-    private void initializePlayer(Context context) {
+    private void initializePlayer(int currentWindow, long playbackPosition) {
         exoPlayer = new SimpleExoPlayer.Builder(context).build();
         mBinding.playerView.setPlayer(exoPlayer);
 
@@ -75,7 +85,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         exoPlayer.prepare();
     }
 
-    private void loadRecipeInfo() {
+    private void loadIngredientsInfo() {
         int counter = 1;
         if (stepNumber == 0) {
             mBinding.tvIngredients.setText("");
@@ -88,7 +98,9 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
                 }
             }
         }
+    }
 
+    private void loadStepsInfo() {
         mBinding.tvSteps.setText(steps.get(stepNumber).getDescription());
     }
 
@@ -98,11 +110,12 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private void reloadInfo() {
-        loadRecipeInfo();
+        loadIngredientsInfo();
+        loadStepsInfo();
         releasePlayer();
         playbackPosition = 0;
         currentWindow = 0;
-        initializePlayer(context);
+        initializePlayer(currentWindow, playbackPosition);
     }
 
     @Override
@@ -122,9 +135,10 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
-        loadRecipeInfo();
+        loadStepsInfo();
+        loadIngredientsInfo();
         if (Util.SDK_INT >= 24) {
-            initializePlayer(context);
+            initializePlayer(currentWindow, playbackPosition);
         }
     }
 
@@ -132,7 +146,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         if ((Util.SDK_INT < 24 || exoPlayer == null)) {
-            initializePlayer(context);
+            initializePlayer(currentWindow, playbackPosition);
         }
     }
 
@@ -160,5 +174,13 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
             exoPlayer.release();
             exoPlayer = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(EXO_PLAYBACK_POSITION, playbackPosition);
+        outState.putInt(EXO_CURRENT_WINDOW, currentWindow);
+        outState.putInt(RECIPE_STEP, stepNumber);
     }
 }
