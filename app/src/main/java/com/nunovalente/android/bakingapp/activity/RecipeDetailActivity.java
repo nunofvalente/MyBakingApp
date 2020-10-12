@@ -28,9 +28,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         getIntentData();
 
-        if(savedInstanceState != null) {
-            return;
-        } else {
+        if(savedInstanceState == null) {
             loadFragment();
         }
     }

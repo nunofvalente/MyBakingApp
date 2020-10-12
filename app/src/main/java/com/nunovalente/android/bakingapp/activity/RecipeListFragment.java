@@ -46,7 +46,9 @@ public class RecipeListFragment extends Fragment implements RecyclerClickListene
 
         mRecyclerRecipeList = view.findViewById(R.id.recycler_recipes);
 
+        configureRecyclerView(getContext());
         getRecipeList();
+
 
         return view;
     }
@@ -55,16 +57,17 @@ public class RecipeListFragment extends Fragment implements RecyclerClickListene
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
             mRecyclerRecipeList.setLayoutManager(layoutManager);
             mRecyclerRecipeList.setHasFixedSize(true);
+            mAdapter = new RecipeAdapter(context, mRecipeList, this);
+            mRecyclerRecipeList.setAdapter(mAdapter);
     }
 
     private void getRecipeList() {
         RecipeViewModel mRecipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         mRecipeViewModel.init();
         mRecipeViewModel.getRecipeRepository().observe(this, recipes -> {
+            mRecipeList.clear();
             mRecipeList.addAll(recipes);
-            mAdapter = new RecipeAdapter(context, mRecipeList, this);
-            mRecyclerRecipeList.setAdapter(mAdapter);
-            configureRecyclerView(context);
+            mAdapter.setValue(mRecipeList);
         });
     }
 

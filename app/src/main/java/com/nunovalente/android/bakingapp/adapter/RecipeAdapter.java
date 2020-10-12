@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeViewHolder> {
 
-    final private List<Recipe> mRecipeList;
+    private List<Recipe> mRecipeList;
     final private RecyclerClickListener listener;
     final private Context context;
 
@@ -27,6 +27,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeVi
         this.context = context;
         this.mRecipeList = mRecipeList;
         this.listener = listener;
+    }
+
+    public void setValue(List<Recipe> list) {
+        this.mRecipeList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
