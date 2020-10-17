@@ -1,13 +1,9 @@
 package com.nunovalente.android.bakingapp.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.model.Recipe;
@@ -26,19 +22,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        getIntentData();
-
         if(savedInstanceState == null) {
             loadFragment();
-        }
-    }
-
-    private void getIntentData() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            recipe = (Recipe) bundle.getSerializable(RecipeListFragment.RECIPE_OBJECT);
-        } else {
-            Log.d(TAG, "Recipe was not passed");
         }
     }
 

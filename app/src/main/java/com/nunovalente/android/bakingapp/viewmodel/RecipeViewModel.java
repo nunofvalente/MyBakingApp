@@ -12,13 +12,12 @@ import java.util.List;
 public class RecipeViewModel extends ViewModel {
 
     private MutableLiveData<List<Recipe>> mutableLiveData;
-    private RecipeRepository repository;
 
     public void init() {
         if(mutableLiveData != null) {
             return;
         }
-        repository = RecipeRepository.getInstance();
+        RecipeRepository repository = RecipeRepository.getInstance();
         mutableLiveData = repository.getRecipeList();
     }
 
