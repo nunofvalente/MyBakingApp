@@ -29,7 +29,6 @@ import java.util.List;
 
 public class RecipeListActivity extends AppCompatActivity implements RecyclerClickListener {
 
-    private final static String TAG = RecipeListActivity.class.getSimpleName();
     public final static String RECIPE_OBJECT = "recipe_object";
 
     private List<Recipe> mRecipeList = new ArrayList<>();
