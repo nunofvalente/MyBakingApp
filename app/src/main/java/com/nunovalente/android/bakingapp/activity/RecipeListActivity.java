@@ -74,6 +74,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
     }
 
     private void getRecipeList() {
+        mBinding.progressBarMain.setVisibility(View.VISIBLE);
         RecipeViewModel mRecipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         mRecipeViewModel.init();
         mRecipeViewModel.getRecipeRepository().observe(this, recipes -> {
@@ -81,6 +82,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
             mRecipeList.addAll(recipes);
             mAdapter.setValue(mRecipeList);
         });
+        mBinding.progressBarMain.setVisibility(View.INVISIBLE);
     }
 
     public void showConnectivityError() {

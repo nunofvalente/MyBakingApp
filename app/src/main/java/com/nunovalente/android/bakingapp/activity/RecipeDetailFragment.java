@@ -54,11 +54,10 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         RecipeDetailActivity activity = (RecipeDetailActivity) getActivity();
         if (activity != null) {
             mRecipe = activity.getRecipe();
+            context = getActivity().getApplicationContext();
+            steps = mRecipe.getSteps();
+            ingredients = mRecipe.getIngredients();
         }
-
-        context = getActivity().getApplicationContext();
-        steps = mRecipe.getSteps();
-        ingredients = mRecipe.getIngredients();
 
         if(savedInstanceState != null) {
             playbackPosition = savedInstanceState.getLong(EXO_PLAYBACK_POSITION);
@@ -77,6 +76,10 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         mBinding.playerView.setPlayer(exoPlayer);
 
         String videoUrl = steps.get(stepNumber).getVideoURL();
+        if(videoUrl.isEmpty()) {
+            videoUrl = steps.get(stepNumber).getThumbnailURL();
+        }
+
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
         exoPlayer.setMediaItem(mediaItem);
 

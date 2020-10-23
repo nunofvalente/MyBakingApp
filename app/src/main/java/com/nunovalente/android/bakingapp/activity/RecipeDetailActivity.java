@@ -25,6 +25,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if(savedInstanceState == null) {
             loadFragment();
         }
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            recipe = (Recipe) bundle.getSerializable(RecipeStepsActivity.RECIPE_SELECTED);
+        }
     }
 
     private void loadFragment() {
