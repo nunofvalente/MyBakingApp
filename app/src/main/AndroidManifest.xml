@@ -13,8 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.RecipeStepsActivity" android:parentActivityName=".activity.RecipeListActivity"/>
         <activity
-            android:name=".activity.RecipeDetailActivity"
-            android:parentActivityName=".activity.RecipeListActivity" />
+            android:name=".activity.RecipeDetailActivity" />
         <activity android:name=".activity.RecipeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

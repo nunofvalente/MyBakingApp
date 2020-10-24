@@ -13,6 +13,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private final static String TAG = RecipeDetailActivity.class.getSimpleName();
 
     private Recipe recipe;
+    private int stepId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             recipe = (Recipe) bundle.getSerializable(RecipeStepsActivity.RECIPE_SELECTED);
+            stepId = getIntent().getIntExtra(RecipeStepsActivity.STEP_SELECTED, 0);
         }
     }
 
@@ -40,5 +42,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     public Recipe getRecipe() {
         return recipe;
+    }
+
+    public int getStepId() {
+        return stepId;
     }
 }

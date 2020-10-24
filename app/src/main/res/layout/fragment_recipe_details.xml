@@ -58,38 +58,7 @@
             android:background="@drawable/tv_drawable"
             android:padding="8dp"/>
 
-        <TextView
-            android:id="@+id/tv_ingredient_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginLeft="@dimen/small_margin"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:layout_marginRight="@dimen/small_margin"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_steps"
-            android:text="@string/ingredients" />
 
-        <TextView
-            android:id="@+id/tv_ingredients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginLeft="@dimen/small_margin"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:layout_marginRight="@dimen/small_margin"
-            android:textSize="@dimen/text_size_medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ingredient_description"
-            tools:text="List of ingredients"
-            android:background="@drawable/tv_drawable"
-            android:padding="8dp"/>
 
         <Button
             android:id="@+id/button_previous"
@@ -100,10 +69,10 @@
             android:layout_marginLeft="@dimen/medium_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_ingredients"
+            app:layout_constraintTop_toBottomOf="@id/tv_steps"
             android:layout_marginStart="@dimen/medium_margin"
             android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
 
         <Button
             android:id="@+id/button_next"
@@ -114,10 +83,10 @@
             android:layout_marginRight="@dimen/medium_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_ingredients"
+            app:layout_constraintTop_toBottomOf="@id/tv_steps"
             android:layout_marginEnd="@dimen/medium_margin"
             android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

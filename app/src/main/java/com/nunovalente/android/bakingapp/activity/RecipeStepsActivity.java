@@ -15,6 +15,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     public final static String RECIPE_SELECTED = "recipe_selected";
     public final static String STEP_SELECTED = "ste_selected";
 
+    private boolean mTwoPane = false;
+
     private Recipe mRecipe;
 
     @Override
@@ -30,6 +32,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
         if (bundle != null) {
             mRecipe = (Recipe) bundle.get(RecipeListActivity.RECIPE_OBJECT);
         }
+
+        mTwoPane = findViewById(R.id.scroll_recipe_details) != null;
 
         Bundle bundleSteps = new Bundle();
         if(mRecipe != null) {

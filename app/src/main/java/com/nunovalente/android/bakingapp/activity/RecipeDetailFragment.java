@@ -34,7 +34,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     private FragmentRecipeDetailsBinding mBinding;
     private Recipe mRecipe;
     private List<Step> steps;
-    private List<Ingredient> ingredients;
     private int stepNumber = 0;
 
     private boolean playWhenReady = true;
@@ -45,7 +44,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,15 +52,14 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         RecipeDetailActivity activity = (RecipeDetailActivity) getActivity();
         if (activity != null) {
             mRecipe = activity.getRecipe();
+            stepNumber = activity.getStepId();
             context = getActivity().getApplicationContext();
             steps = mRecipe.getSteps();
-            ingredients = mRecipe.getIngredients();
         }
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             playbackPosition = savedInstanceState.getLong(EXO_PLAYBACK_POSITION);
             currentWindow = savedInstanceState.getInt(EXO_CURRENT_WINDOW);
-            loadIngredientsInfo();
             stepNumber = savedInstanceState.getInt(RECIPE_STEP);
         }
 
@@ -76,35 +73,40 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         mBinding.playerView.setPlayer(exoPlayer);
 
         String videoUrl = steps.get(stepNumber).getVideoURL();
-        if(videoUrl.isEmpty()) {
+        if (videoUrl.isEmpty()) {
             videoUrl = steps.get(stepNumber).getThumbnailURL();
         }
 
-        MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
-        exoPlayer.setMediaItem(mediaItem);
+        if (videoUrl != null) {
+            MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
+            exoPlayer.setMediaItem(mediaItem);
 
-        exoPlayer.setPlayWhenReady(playWhenReady);
-        exoPlayer.seekTo(currentWindow, playbackPosition);
-        exoPlayer.prepare();
-    }
-
-    private void loadIngredientsInfo() {
-        int counter = 1;
-        if (stepNumber == 0) {
-            mBinding.tvIngredients.setText("");
-            for (Ingredient ingredient : ingredients) {
-                if(counter == ingredients.size()) {
-                    mBinding.tvIngredients.append(ingredient.toString());
-                } else {
-                    mBinding.tvIngredients.append(ingredient.toString() + "\n");
-                    counter++;
-                }
-            }
+            exoPlayer.setPlayWhenReady(playWhenReady);
+            exoPlayer.seekTo(currentWindow, playbackPosition);
+            exoPlayer.prepare();
         }
     }
 
     private void loadStepsInfo() {
         mBinding.tvSteps.setText(steps.get(stepNumber).getDescription());
+        processPreviousButton();
+        processNextButton();
+    }
+
+    private void processNextButton() {
+        if (stepNumber == 0) {
+            mBinding.buttonPrevious.setVisibility(View.GONE);
+        } else {
+            mBinding.buttonPrevious.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void processPreviousButton() {
+        if (stepNumber + 1 == steps.size()) {
+            mBinding.buttonNext.setVisibility(View.GONE);
+        } else {
+            mBinding.buttonNext.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setListeners() {
@@ -113,7 +115,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private void reloadInfo() {
-        loadIngredientsInfo();
         loadStepsInfo();
         releasePlayer();
         playbackPosition = 0;
@@ -139,7 +140,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public void onStart() {
         super.onStart();
         loadStepsInfo();
-        loadIngredientsInfo();
         if (Util.SDK_INT >= 24) {
             initializePlayer(currentWindow, playbackPosition);
         }
