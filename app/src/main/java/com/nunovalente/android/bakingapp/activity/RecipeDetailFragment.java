@@ -29,7 +29,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public final static String EXO_CURRENT_WINDOW = "exo_current_window";
     public final static String RECIPE_STEP = "recipe_step_number";
 
-    private Context context;
     private SimpleExoPlayer exoPlayer;
     private FragmentRecipeDetailsBinding mBinding;
     private Recipe mRecipe;
@@ -40,6 +39,8 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
+    private boolean mTwoPane = false;
+
     public RecipeDetailFragment() {
     }
 
@@ -49,12 +50,13 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
 
-        RecipeDetailActivity activity = (RecipeDetailActivity) getActivity();
-        if (activity != null) {
-            mRecipe = activity.getRecipe();
-            stepNumber = activity.getStepId();
-            context = getActivity().getApplicationContext();
-            steps = mRecipe.getSteps();
+            mTwoPane = RecipeStepsActivity.mTwoPane;
+
+            if (getArguments() != null) {
+                mRecipe = (Recipe) getArguments().get(RecipeDetailActivity.RECIPE);
+                stepNumber = getArguments().getInt(RecipeDetailActivity.RECIPE_STEP);
+              //  context = getActivity().getApplicationContext();
+                steps = mRecipe.getSteps();
         }
 
         if (savedInstanceState != null) {
@@ -69,7 +71,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private void initializePlayer(int currentWindow, long playbackPosition) {
-        exoPlayer = new SimpleExoPlayer.Builder(context).build();
+        exoPlayer = new SimpleExoPlayer.Builder(getContext()).build();
         mBinding.playerView.setPlayer(exoPlayer);
 
         String videoUrl = steps.get(stepNumber).getVideoURL();
@@ -89,8 +91,13 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
 
     private void loadStepsInfo() {
         mBinding.tvSteps.setText(steps.get(stepNumber).getDescription());
-        processPreviousButton();
-        processNextButton();
+        if(mTwoPane) {
+            mBinding.buttonPrevious.setVisibility(View.GONE);
+            mBinding.buttonNext.setVisibility(View.GONE);
+        } else {
+            processPreviousButton();
+            processNextButton();
+        }
     }
 
     private void processNextButton() {

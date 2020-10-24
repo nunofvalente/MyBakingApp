@@ -12,6 +12,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private final static String TAG = RecipeDetailActivity.class.getSimpleName();
 
+    public static final String RECIPE = "recipe";
+    public static final String RECIPE_STEP = "recipe_step";
+
+
     private Recipe recipe;
     private int stepId;
 
@@ -23,20 +27,24 @@ public class RecipeDetailActivity extends AppCompatActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if(savedInstanceState == null) {
-            loadFragment();
-        }
-
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             recipe = (Recipe) bundle.getSerializable(RecipeStepsActivity.RECIPE_SELECTED);
             stepId = getIntent().getIntExtra(RecipeStepsActivity.STEP_SELECTED, 0);
+        }
+
+        if(savedInstanceState == null) {
+            loadFragment();
         }
     }
 
     private void loadFragment() {
         RecipeDetailFragment detailFragment = new RecipeDetailFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle bundleFragment = new Bundle();
+        bundleFragment.putSerializable(RECIPE, recipe);
+        bundleFragment.putInt(RECIPE_STEP, stepId);
+        detailFragment.setArguments(bundleFragment);
         fragmentManager.beginTransaction().add(R.id.frame_recipe_details, detailFragment).commit();
     }
 

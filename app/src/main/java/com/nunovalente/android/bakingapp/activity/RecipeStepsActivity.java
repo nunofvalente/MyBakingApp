@@ -15,7 +15,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     public final static String RECIPE_SELECTED = "recipe_selected";
     public final static String STEP_SELECTED = "ste_selected";
 
-    private boolean mTwoPane = false;
+    public static boolean mTwoPane = false;
 
     private Recipe mRecipe;
 
@@ -33,7 +33,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             mRecipe = (Recipe) bundle.get(RecipeListActivity.RECIPE_OBJECT);
         }
 
-        mTwoPane = findViewById(R.id.scroll_recipe_details) != null;
+        mTwoPane = findViewById(R.id.frame_recipe_details) != null;
 
         Bundle bundleSteps = new Bundle();
         if(mRecipe != null) {
@@ -47,9 +47,21 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
 
     @Override
     public void onStepSelected(int id) {
-        Intent intent = new Intent(this, RecipeDetailActivity.class);
-        intent.putExtra(RECIPE_SELECTED, mRecipe);
-        intent.putExtra(STEP_SELECTED, id);
-        startActivity(intent);
+        if(mTwoPane) {
+            Bundle bundleDetails = new Bundle();
+            RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+            bundleDetails.putSerializable(RecipeDetailActivity.RECIPE, mRecipe);
+            bundleDetails.putInt(RecipeDetailActivity.RECIPE_STEP, id);
+            recipeDetailFragment.setArguments(bundleDetails);
+
+            FragmentManager fragmentManagerDetails = getSupportFragmentManager();
+            fragmentManagerDetails.beginTransaction().replace(R.id.frame_recipe_details, recipeDetailFragment).commit();
+
+        } else {
+            Intent intent = new Intent(this, RecipeDetailActivity.class);
+            intent.putExtra(RECIPE_SELECTED, mRecipe);
+            intent.putExtra(STEP_SELECTED, id);
+            startActivity(intent);
+        }
     }
 }
