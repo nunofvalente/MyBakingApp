@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<ScrollView android:id="@+id/scroll_recipe_details"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/player_view"
+        <FrameLayout
+            android:id="@+id/player_frame"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/player_height"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginLeft="@dimen/small_margin"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:layout_marginRight="@dimen/small_margin"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exoPlayerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/player_height" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_steps_description"
@@ -38,7 +34,7 @@
             android:textSize="@dimen/text_size_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/player_view"
+            app:layout_constraintTop_toBottomOf="@+id/player_frame"
             android:text="@string/instruction" />
 
         <TextView
@@ -59,35 +55,33 @@
             android:padding="8dp"/>
 
 
-
         <Button
             android:id="@+id/button_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/previous"
-            android:layout_marginTop="@dimen/medium_margin"
             android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:background="@drawable/button_drawable"
+            android:text="@string/previous"
+            android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_steps"
-            android:layout_marginStart="@dimen/medium_margin"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next"
             android:layout_marginTop="@dimen/medium_margin"
             android:layout_marginRight="@dimen/medium_margin"
+            android:background="@drawable/button_drawable"
+            android:text="@string/next"
+            android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_steps"
-            android:layout_marginEnd="@dimen/medium_margin"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent" />
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
 </layout>

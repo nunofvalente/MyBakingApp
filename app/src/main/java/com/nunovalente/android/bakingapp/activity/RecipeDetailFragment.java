@@ -1,27 +1,38 @@
 package com.nunovalente.android.bakingapp.activity;
 
-import android.content.Context;
+
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.util.Util;
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.databinding.FragmentRecipeDetailsBinding;
-import com.nunovalente.android.bakingapp.model.Ingredient;
 import com.nunovalente.android.bakingapp.model.Recipe;
 import com.nunovalente.android.bakingapp.model.Step;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeDetailFragment extends Fragment implements View.OnClickListener {
 
@@ -31,32 +42,37 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
 
     private SimpleExoPlayer exoPlayer;
     private FragmentRecipeDetailsBinding mBinding;
-    private Recipe mRecipe;
     private List<Step> steps;
     private int stepNumber = 0;
+    private ImageView mFullScreenButton;
+    private boolean fullScreen;
+
 
     private boolean playWhenReady = true;
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
-    private boolean mTwoPane = false;
+    private boolean mTwoPane;
 
     public RecipeDetailFragment() {
     }
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
 
-            mTwoPane = RecipeStepsActivity.mTwoPane;
+        mTwoPane = RecipeStepsActivity.mTwoPane;
+        mFullScreenButton = mBinding.exoPlayerView.findViewById(R.id.exo_fullscreen_icon);
 
-            if (getArguments() != null) {
-                mRecipe = (Recipe) getArguments().get(RecipeDetailActivity.RECIPE);
-                stepNumber = getArguments().getInt(RecipeDetailActivity.RECIPE_STEP);
-              //  context = getActivity().getApplicationContext();
+
+
+        if (getArguments() != null) {
+            Recipe mRecipe = (Recipe) getArguments().get(RecipeDetailActivity.RECIPE);
+            stepNumber = getArguments().getInt(RecipeDetailActivity.RECIPE_STEP);
+            if (mRecipe != null) {
                 steps = mRecipe.getSteps();
+            }
         }
 
         if (savedInstanceState != null) {
@@ -66,32 +82,54 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         }
 
         setListeners();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            initializeFullScreenButton();
+        }
 
         return mBinding.getRoot();
     }
 
+
     private void initializePlayer(int currentWindow, long playbackPosition) {
-        exoPlayer = new SimpleExoPlayer.Builder(getContext()).build();
-        mBinding.playerView.setPlayer(exoPlayer);
+        if (getContext() != null) {
+            exoPlayer = new SimpleExoPlayer.Builder(getContext()).build();
+        }
+        mBinding.exoPlayerView.setPlayer(exoPlayer);
 
         String videoUrl = steps.get(stepNumber).getVideoURL();
         if (videoUrl.isEmpty()) {
             videoUrl = steps.get(stepNumber).getThumbnailURL();
         }
 
-        if (videoUrl != null) {
+        if (!videoUrl.equals("")) {
+            mBinding.playerFrame.setVisibility(View.VISIBLE);
             MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
             exoPlayer.setMediaItem(mediaItem);
 
+            mBinding.exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+            exoPlayer.setVideoScalingMode(Renderer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
             exoPlayer.setPlayWhenReady(playWhenReady);
             exoPlayer.seekTo(currentWindow, playbackPosition);
             exoPlayer.prepare();
+        } else {
+            mBinding.playerFrame.setVisibility(View.GONE);
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void hideSystemUi() {
+        mBinding.exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     private void loadStepsInfo() {
         mBinding.tvSteps.setText(steps.get(stepNumber).getDescription());
-        if(mTwoPane) {
+        if (mTwoPane) {
             mBinding.buttonPrevious.setVisibility(View.GONE);
             mBinding.buttonNext.setVisibility(View.GONE);
         } else {
@@ -129,6 +167,36 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         initializePlayer(currentWindow, playbackPosition);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initializeFullScreenButton() {
+        mFullScreenButton = mBinding.exoPlayerView.findViewById(R.id.exo_fullscreen_icon);
+        mFullScreenButton.setOnClickListener(view -> {
+            if(fullScreen) {
+                mFullScreenButton.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_fullscreen_expand));
+                if(getActivity() != null) {
+                    getActivity().getActionBar().show();
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mBinding.exoPlayerView.getLayoutParams();
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                params.height = 300;
+                mBinding.playerFrame.setLayoutParams(params);
+                fullScreen = false;
+            }else{
+                mFullScreenButton.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_fullscreen_skrink));
+                if(getActivity() != null) {
+                    hideSystemUi();
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mBinding.exoPlayerView.getLayoutParams();
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                mBinding.exoPlayerView.setLayoutParams(params);
+                fullScreen = true;
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -148,14 +216,21 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         super.onStart();
         loadStepsInfo();
         if (Util.SDK_INT >= 24) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                hideSystemUi();
+            }
             initializePlayer(currentWindow, playbackPosition);
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onResume() {
         super.onResume();
         if ((Util.SDK_INT < 24 || exoPlayer == null)) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                hideSystemUi();
+            }
             initializePlayer(currentWindow, playbackPosition);
         }
     }

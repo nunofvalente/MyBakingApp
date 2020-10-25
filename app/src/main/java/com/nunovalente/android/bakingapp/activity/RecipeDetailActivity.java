@@ -1,5 +1,6 @@
 package com.nunovalente.android.bakingapp.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -55,4 +56,5 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public int getStepId() {
         return stepId;
     }
+
 }

@@ -8,4 +8,9 @@
     <string name="settings">Settings</string>
     <string name="could_not_load_information_no_internet_connection">Could not load information. No internet connection!</string>
     <string name="view_step">View Step</string>
+    <string name="rewind">Rewind</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="forward">Forward</string>
+    <string name="fullscreen">FullScreen</string>
 </resources>
