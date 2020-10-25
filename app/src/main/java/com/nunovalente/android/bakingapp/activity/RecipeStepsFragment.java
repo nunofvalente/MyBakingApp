@@ -61,7 +61,7 @@ public class RecipeStepsFragment extends Fragment implements RecyclerClickListen
         recyclerSteps = view.findViewById(R.id.recycler_steps);
 
         if (getArguments() != null) {
-            mRecipe = (Recipe) getArguments().getSerializable(RecipeStepsActivity.RECIPE_STEP);
+            mRecipe = (Recipe) getArguments().getSerializable(getResources().getString(R.string.RECIPE_STEP));
             assert mRecipe != null;
             ingredients = mRecipe.getIngredients();
         }

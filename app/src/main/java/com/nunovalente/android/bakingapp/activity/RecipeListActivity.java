@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -29,8 +30,6 @@ import java.util.List;
 
 
 public class RecipeListActivity extends AppCompatActivity implements RecyclerClickListener {
-
-    public final static String RECIPE_OBJECT = "recipe_object";
 
     private List<Recipe> mRecipeList = new ArrayList<>();
     private RecipeAdapter mAdapter;
@@ -65,22 +64,17 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
         return super.onCreateOptionsMenu(menu);
     }
 
-    public static int calculateNoOfColumns(Context context) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        float dpWidth = metrics.widthPixels / metrics.density;
-        int scalingFactor = 200;
-        int noOfColumns = (int) (dpWidth / scalingFactor);
-        if (noOfColumns < 2)
-            noOfColumns = 2;
-        return noOfColumns;
-    }
-
 
     private void configureRecyclerView(Context context) {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         if(tabletSize) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3);
-            mBinding.recyclerRecipes.setLayoutManager(gridLayoutManager);
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
+                mBinding.recyclerRecipes.setLayoutManager(gridLayoutManager);
+            }else {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
+                mBinding.recyclerRecipes.setLayoutManager(gridLayoutManager);
+            }
         } else {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
             mBinding.recyclerRecipes.setLayoutManager(layoutManager);
@@ -117,7 +111,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
     public void onClick(int position) {
         Recipe recipe = mRecipeList.get(position);
         Intent intent = new Intent(this, RecipeStepsActivity.class);
-        intent.putExtra(RECIPE_OBJECT, recipe);
+        intent.putExtra(getResources().getString(R.string.RECIPE), recipe);
         startActivity(intent);
     }
 }

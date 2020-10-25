@@ -13,4 +13,8 @@
     <string name="pause">Pause</string>
     <string name="forward">Forward</string>
     <string name="fullscreen">FullScreen</string>
+    <string name="RECIPE">recipe</string>
+    <string name="RECIPE_STEP">recipe_step</string>
+    <string name="STEP_SELECTED">step_selected</string>
+    <string name="IS_TWO_PANE">isTwoPane</string>
 </resources>

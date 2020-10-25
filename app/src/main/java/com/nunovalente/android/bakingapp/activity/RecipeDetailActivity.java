@@ -1,6 +1,5 @@
 package com.nunovalente.android.bakingapp.activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -13,12 +12,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private final static String TAG = RecipeDetailActivity.class.getSimpleName();
 
-    public static final String RECIPE = "recipe";
-    public static final String RECIPE_STEP = "recipe_step";
-
-
     private Recipe recipe;
     private int stepId;
+    private int currentWindow = 0;
+    private long playbackPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +27,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            recipe = (Recipe) bundle.getSerializable(RecipeStepsActivity.RECIPE_SELECTED);
-            stepId = getIntent().getIntExtra(RecipeStepsActivity.STEP_SELECTED, 0);
+            recipe = (Recipe) bundle.getSerializable(getResources().getString(R.string.RECIPE));
+            stepId = getIntent().getIntExtra(getResources().getString(R.string.STEP_SELECTED), 0);
+            currentWindow = bundle.getInt(RecipeDetailFragment.EXO_CURRENT_WINDOW, 0);
+            playbackPosition = bundle.getLong(RecipeDetailFragment.EXO_PLAYBACK_POSITION, 0);
         }
 
         if(savedInstanceState == null) {
@@ -43,8 +42,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         RecipeDetailFragment detailFragment = new RecipeDetailFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundleFragment = new Bundle();
-        bundleFragment.putSerializable(RECIPE, recipe);
-        bundleFragment.putInt(RECIPE_STEP, stepId);
+        bundleFragment.putSerializable(getResources().getString(R.string.RECIPE), recipe);
+        bundleFragment.putInt(getResources().getString(R.string.RECIPE_STEP), stepId);
+        bundleFragment.putInt(RecipeDetailFragment.EXO_CURRENT_WINDOW, currentWindow);
+        bundleFragment.putLong(RecipeDetailFragment.EXO_PLAYBACK_POSITION, playbackPosition);
         detailFragment.setArguments(bundleFragment);
         fragmentManager.beginTransaction().add(R.id.frame_recipe_details, detailFragment).commit();
     }

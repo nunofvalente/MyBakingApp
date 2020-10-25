@@ -11,10 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.RecipeStepsActivity" android:parentActivityName=".activity.RecipeListActivity"/>
         <activity
-            android:name=".activity.RecipeDetailActivity" />
-        <activity android:name=".activity.RecipeListActivity">
+            android:name=".activity.RecipeStepsActivity"
+            android:parentActivityName=".activity.RecipeListActivity"/>
+        <activity
+            android:name=".activity.RecipeDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FullScreenActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".activity.RecipeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

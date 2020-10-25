@@ -10,23 +10,25 @@
         android:id="@+id/fragment_recipe_steps"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
         tools:context=".activity.RecipeStepsActivity"
-        android:layout_weight="1">
-    </FrameLayout>
+        android:layout_weight="1.5"/>
 
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
     <FrameLayout
         android:id="@+id/frame_recipe_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".activity.RecipeDetailActivity"
-        android:layout_weight="1">
-    </FrameLayout>
+        tools:context=".activity.RecipeDetailActivity" />
 
+    </ScrollView>
 </LinearLayout>

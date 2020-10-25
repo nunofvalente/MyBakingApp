@@ -1,8 +1,7 @@
 package com.nunovalente.android.bakingapp.activity;
 
-
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +14,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -39,19 +36,18 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public final static String EXO_PLAYBACK_POSITION = "playback_position";
     public final static String EXO_CURRENT_WINDOW = "exo_current_window";
     public final static String RECIPE_STEP = "recipe_step_number";
+    public final static String VIDEO_URL = "video_url";
 
+    private Recipe mRecipe;
     private SimpleExoPlayer exoPlayer;
     private FragmentRecipeDetailsBinding mBinding;
     private List<Step> steps;
     private int stepNumber = 0;
     private ImageView mFullScreenButton;
-    private boolean fullScreen;
-
-
+    private String videoUrl;
     private boolean playWhenReady = true;
     private int currentWindow = 0;
     private long playbackPosition = 0;
-
     private boolean mTwoPane;
 
     public RecipeDetailFragment() {
@@ -62,14 +58,14 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
 
-        mTwoPane = RecipeStepsActivity.mTwoPane;
         mFullScreenButton = mBinding.exoPlayerView.findViewById(R.id.exo_fullscreen_icon);
-
-
+        mTwoPane = RecipeStepsActivity.mTwoPane;
 
         if (getArguments() != null) {
-            Recipe mRecipe = (Recipe) getArguments().get(RecipeDetailActivity.RECIPE);
-            stepNumber = getArguments().getInt(RecipeDetailActivity.RECIPE_STEP);
+            mRecipe = (Recipe) getArguments().get(getResources().getString(R.string.RECIPE));
+            stepNumber = getArguments().getInt(getResources().getString(R.string.RECIPE_STEP));
+            playbackPosition = getArguments().getLong(EXO_PLAYBACK_POSITION, 0);
+            currentWindow = getArguments().getInt(EXO_CURRENT_WINDOW, 0);
             if (mRecipe != null) {
                 steps = mRecipe.getSteps();
             }
@@ -96,7 +92,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         }
         mBinding.exoPlayerView.setPlayer(exoPlayer);
 
-        String videoUrl = steps.get(stepNumber).getVideoURL();
+        videoUrl = steps.get(stepNumber).getVideoURL();
         if (videoUrl.isEmpty()) {
             videoUrl = steps.get(stepNumber).getThumbnailURL();
         }
@@ -114,17 +110,10 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         } else {
             mBinding.playerFrame.setVisibility(View.GONE);
         }
-    }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void hideSystemUi() {
-        mBinding.exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        if(mTwoPane) {
+            mFullScreenButton.setVisibility(View.GONE);
+        }
     }
 
     private void loadStepsInfo() {
@@ -170,30 +159,20 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void initializeFullScreenButton() {
         mFullScreenButton = mBinding.exoPlayerView.findViewById(R.id.exo_fullscreen_icon);
+        if (getContext() != null) {
+            mFullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_expand));
+        }
         mFullScreenButton.setOnClickListener(view -> {
-            if(fullScreen) {
-                mFullScreenButton.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_fullscreen_expand));
-                if(getActivity() != null) {
-                    getActivity().getActionBar().show();
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                }
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mBinding.exoPlayerView.getLayoutParams();
-                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                params.height = 300;
-                mBinding.playerFrame.setLayoutParams(params);
-                fullScreen = false;
-            }else{
-                mFullScreenButton.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_fullscreen_skrink));
-                if(getActivity() != null) {
-                    hideSystemUi();
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                }
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mBinding.exoPlayerView.getLayoutParams();
-                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                mBinding.exoPlayerView.setLayoutParams(params);
-                fullScreen = true;
-            }
+            Intent intent = new Intent(getContext(), FullScreenActivity.class);
+            playbackPosition = exoPlayer.getCurrentPosition();
+            currentWindow = exoPlayer.getCurrentWindowIndex();
+            intent.putExtra(EXO_PLAYBACK_POSITION, playbackPosition);
+            intent.putExtra(EXO_CURRENT_WINDOW, currentWindow);
+            intent.putExtra(VIDEO_URL, videoUrl);
+            intent.putExtra(getResources().getString(R.string.RECIPE), mRecipe);
+            intent.putExtra(getResources().getString(R.string.STEP_SELECTED), stepNumber);
+            intent.putExtra(getResources().getString(R.string.IS_TWO_PANE), mTwoPane);
+            startActivity(intent);
         });
     }
 
@@ -216,9 +195,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         super.onStart();
         loadStepsInfo();
         if (Util.SDK_INT >= 24) {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                hideSystemUi();
-            }
             initializePlayer(currentWindow, playbackPosition);
         }
     }
@@ -228,9 +204,6 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         if ((Util.SDK_INT < 24 || exoPlayer == null)) {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                hideSystemUi();
-            }
             initializePlayer(currentWindow, playbackPosition);
         }
     }
