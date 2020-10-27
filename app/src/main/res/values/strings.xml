@@ -17,4 +17,13 @@
     <string name="RECIPE_STEP">recipe_step</string>
     <string name="STEP_SELECTED">step_selected</string>
     <string name="IS_TWO_PANE">isTwoPane</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+
+    <!-- SharedPreferences Strings -->
+    <string name="SHARED_PREFERENCES">shared_key</string>
+    <string name="recipe_pref_name">recipe_name</string>
+    <string name="recipe_pref_id">recipe_id</string>
+    <string name="recipe_pref_key">recipe</string>
 </resources>

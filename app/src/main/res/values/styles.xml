@@ -7,4 +7,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppWidgetLabel">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:layout_margin">@dimen/small_margin</item>
+    </style>
+
 </resources>

@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_relative_layout"
+    android:padding="@dimen/widget_margin"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_recipe_widget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/ingredients"
+            style="@style/AppWidgetLabel"/>
+
+        <ListView
+            android:id="@+id/list_ingredients_widget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.adapter.RecipeAdapter;
 import com.nunovalente.android.bakingapp.adapter.RecyclerClickListener;
@@ -24,6 +26,7 @@ import com.nunovalente.android.bakingapp.databinding.ActivityMainBinding;
 import com.nunovalente.android.bakingapp.model.Recipe;
 import com.nunovalente.android.bakingapp.util.NetworkUtils;
 import com.nunovalente.android.bakingapp.viewmodel.RecipeViewModel;
+import com.nunovalente.android.bakingapp.widget.IngredientService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
 
     private List<Recipe> mRecipeList = new ArrayList<>();
     private RecipeAdapter mAdapter;
+    private SharedPreferences prefs;
 
     private ActivityMainBinding mBinding;
 
@@ -110,6 +114,21 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
     @Override
     public void onClick(int position) {
         Recipe recipe = mRecipeList.get(position);
+
+        prefs = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(recipe);
+
+        editor.putString(getApplicationContext().getString(R.string.recipe_pref_key), json);
+        editor.putString(getApplicationContext().getString(R.string.recipe_pref_name), recipe.getName());
+        editor.putInt(getApplicationContext().getString(R.string.recipe_pref_id), recipe.getId());
+        editor.apply();
+
+        IngredientService.startActionUpdateIngredients(getApplicationContext());
+
         Intent intent = new Intent(this, RecipeStepsActivity.class);
         intent.putExtra(getResources().getString(R.string.RECIPE), recipe);
         startActivity(intent);

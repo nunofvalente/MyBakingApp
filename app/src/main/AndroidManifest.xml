@@ -3,6 +3,7 @@
     package="com.nunovalente.android.bakingapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,25 +12,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".widget.BakingAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_app_widget_info" />
+        </receiver>
+
         <activity
             android:name=".activity.RecipeStepsActivity"
-            android:parentActivityName=".activity.RecipeListActivity"/>
+            android:parentActivityName=".activity.RecipeListActivity" />
         <activity
             android:name=".activity.RecipeDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.FullScreenActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.RecipeListActivity">
+            android:name=".activity.FullScreenActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.RecipeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".widget.IngredientService" android:exported="false"/>
+        <service android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

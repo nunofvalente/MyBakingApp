@@ -3,14 +3,13 @@ package com.nunovalente.android.bakingapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.model.Recipe;
 
 public class RecipeDetailActivity extends AppCompatActivity {
-
-    private final static String TAG = RecipeDetailActivity.class.getSimpleName();
 
     private Recipe recipe;
     private int stepId;
@@ -58,4 +57,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
         return stepId;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startStepActivity();
+    }
+
+    private void startStepActivity() {
+        Intent intent = new Intent(this, RecipeStepsActivity.class);
+        intent.putExtra(getResources().getString(R.string.RECIPE), recipe);
+        startActivity(intent);
+    }
 }
