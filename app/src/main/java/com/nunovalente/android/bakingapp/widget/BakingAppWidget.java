@@ -28,7 +28,7 @@ public class BakingAppWidget extends AppWidgetProvider {
         String recipeName = pref.getString(context.getString(R.string.recipe_pref_name), "");
 
         Intent intent = new Intent(context, RecipeListActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 , intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
@@ -38,9 +38,7 @@ public class BakingAppWidget extends AppWidgetProvider {
         Intent serviceIntent = new Intent(context, WidgetService.class);
         views.setRemoteAdapter(R.id.list_ingredients_widget, serviceIntent);
 
-        views.setOnClickPendingIntent(R.id.widget_relative_layout, pendingIntent);
-
-       // views.setEmptyView(R.id.widget_relative_layout, R.id.tv_widget_default);
+        views.setPendingIntentTemplate(R.id.widget_relative_layout, pendingIntent);
 
 
 

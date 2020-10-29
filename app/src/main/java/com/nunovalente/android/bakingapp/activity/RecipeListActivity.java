@@ -133,4 +133,10 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
         intent.putExtra(getResources().getString(R.string.RECIPE), recipe);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

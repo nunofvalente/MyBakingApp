@@ -5,9 +5,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.model.Recipe;
 
@@ -60,6 +57,13 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             intent.putExtra(getResources().getString(R.string.RECIPE), mRecipe);
             intent.putExtra(getResources().getString(R.string.STEP_SELECTED), id);
             startActivity(intent);
+            finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
