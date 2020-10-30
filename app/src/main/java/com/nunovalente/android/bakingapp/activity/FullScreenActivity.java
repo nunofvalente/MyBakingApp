@@ -76,9 +76,7 @@ public class FullScreenActivity extends AppCompatActivity {
     private void initializeFullScreenButton() {
         mFullScreenButton = mBinding.exoPlayerFullscreen.findViewById(R.id.exo_fullscreen_icon);
         mFullScreenButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_fullscreen_skrink));
-        mFullScreenButton.setOnClickListener(view -> {
-            startDetailActivity();
-        });
+        mFullScreenButton.setOnClickListener(view -> startDetailActivity());
     }
 
     private void startDetailActivity() {
@@ -89,12 +87,6 @@ public class FullScreenActivity extends AppCompatActivity {
         intent.putExtra(RecipeDetailFragment.EXO_CURRENT_WINDOW, currentWindow);
         intent.putExtra(getResources().getString(R.string.RECIPE), mRecipe);
         intent.putExtra(getResources().getString(R.string.STEP_SELECTED), stepNumber);
-        startActivity(intent);
-    }
-
-    private void startStepActivity() {
-        Intent intent = new Intent(this, RecipeDetailActivity.class);
-        intent.putExtra(getResources().getString(R.string.RECIPE), mRecipe);
         startActivity(intent);
     }
 

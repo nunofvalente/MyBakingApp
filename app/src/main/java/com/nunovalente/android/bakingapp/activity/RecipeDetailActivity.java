@@ -53,10 +53,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         return recipe;
     }
 
-    public int getStepId() {
-        return stepId;
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

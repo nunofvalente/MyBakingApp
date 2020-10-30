@@ -10,9 +10,9 @@ public class Ingredient implements Serializable {
      * ingredient : Graham Cracker crumbs
      */
 
-    private float quantity;
-    private String measure;
-    private String ingredient;
+    private final float quantity;
+    private final String measure;
+    private final String ingredient;
 
     public Ingredient(int quantity, String measure, String ingredient) {
         this.quantity = quantity;
@@ -24,26 +24,15 @@ public class Ingredient implements Serializable {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getMeasure() {
         return measure;
-    }
-
-    public void setMeasure(String measure) {
-        this.measure = measure;
     }
 
     public String getIngredient() {
         return ingredient;
     }
 
-    public void setIngredient(String ingredient) {
-        this.ingredient = ingredient;
-    }
-
+    @SuppressWarnings("NullableProblems")
     @Override
     public String toString() {
         return ingredient + " " + " " + quantity + measure;

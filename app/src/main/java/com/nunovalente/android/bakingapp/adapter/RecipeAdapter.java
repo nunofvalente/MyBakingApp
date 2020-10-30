@@ -1,7 +1,6 @@
 package com.nunovalente.android.bakingapp.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.model.Recipe;
 

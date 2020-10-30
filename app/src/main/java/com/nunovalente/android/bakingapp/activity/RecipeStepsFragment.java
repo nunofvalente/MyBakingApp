@@ -24,7 +24,6 @@ import java.util.List;
 public class RecipeStepsFragment extends Fragment implements RecyclerClickListener {
 
     private OnStepClickListener mCallback;
-    private RecyclerView recyclerSteps;
     private Recipe mRecipe;
     private TextView mIngredientsListText;
     private List<Ingredient> ingredients;
@@ -58,7 +57,7 @@ public class RecipeStepsFragment extends Fragment implements RecyclerClickListen
         View view = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
 
         mIngredientsListText = view.findViewById(R.id.tv_ingredient_list);
-        recyclerSteps = view.findViewById(R.id.recycler_steps);
+        RecyclerView recyclerSteps = view.findViewById(R.id.recycler_steps);
 
         if (getArguments() != null) {
             mRecipe = (Recipe) getArguments().getSerializable(getResources().getString(R.string.RECIPE_STEP));

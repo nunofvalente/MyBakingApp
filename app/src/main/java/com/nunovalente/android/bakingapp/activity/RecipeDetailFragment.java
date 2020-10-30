@@ -1,14 +1,12 @@
 package com.nunovalente.android.bakingapp.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +27,6 @@ import com.nunovalente.android.bakingapp.model.Recipe;
 import com.nunovalente.android.bakingapp.model.Step;
 
 import java.util.List;
-import java.util.Objects;
 
 public class RecipeDetailFragment extends Fragment implements View.OnClickListener {
 

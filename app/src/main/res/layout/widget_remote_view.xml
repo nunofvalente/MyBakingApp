@@ -28,7 +28,8 @@
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginBottom="@dimen/small_margin"
         android:layout_marginLeft="@dimen/smallest_margin"
-        tools:text="Kg"/>
+        tools:text="Kg"
+        android:layout_marginStart="@dimen/smallest_margin" />
 
 
 </LinearLayout>

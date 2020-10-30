@@ -30,7 +30,6 @@ public class Recipe implements Serializable {
         this.steps = steps;
     }
 
-  //  @Ignore
     public Recipe() {
     }
 
@@ -54,34 +53,16 @@ public class Recipe implements Serializable {
         return servings;
     }
 
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
-
     public String getImage() {
         return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
     public List<Step> getSteps() {
         return steps;
     }
-
-    public void setSteps(List<Step> steps) {
-        this.steps = steps;
-    }
-
-
 
 }

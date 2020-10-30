@@ -6,15 +6,11 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 
 import com.nunovalente.android.bakingapp.R;
 import com.nunovalente.android.bakingapp.activity.RecipeListActivity;
-import com.nunovalente.android.bakingapp.activity.RecipeStepsActivity;
-import com.nunovalente.android.bakingapp.model.Ingredient;
 
-import java.util.List;
 
 /**
  * Implementation of App Widget functionality.

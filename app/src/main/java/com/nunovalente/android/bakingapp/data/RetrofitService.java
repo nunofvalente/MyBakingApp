@@ -18,10 +18,6 @@ public class RetrofitService {
             .client(httpClient.build())
             .build();
 
-    public static Retrofit getRetrofit() {
-        return retrofit;
-    }
-
     public static WebService getInterface() {
         return retrofit.create(WebService.class);
     }

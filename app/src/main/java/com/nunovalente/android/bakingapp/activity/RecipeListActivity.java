@@ -34,10 +34,9 @@ import com.nunovalente.android.bakingapp.widget.IngredientService;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class RecipeListActivity extends AppCompatActivity implements RecyclerClickListener {
 
-    private List<Recipe> mRecipeList = new ArrayList<>();
+    private final List<Recipe> mRecipeList = new ArrayList<>();
     private RecipeAdapter mAdapter;
 
     private ActivityMainBinding mBinding;

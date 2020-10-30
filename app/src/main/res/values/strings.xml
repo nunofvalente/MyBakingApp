@@ -7,23 +7,16 @@
     <string name="instruction">Instruction:</string>
     <string name="settings">Settings</string>
     <string name="could_not_load_information_no_internet_connection">Could not load information. No internet connection!</string>
-    <string name="view_step">View Step</string>
-    <string name="rewind">Rewind</string>
-    <string name="play">Play</string>
-    <string name="pause">Pause</string>
-    <string name="forward">Forward</string>
-    <string name="fullscreen">FullScreen</string>
     <string name="RECIPE">recipe</string>
     <string name="RECIPE_STEP">recipe_step</string>
     <string name="STEP_SELECTED">step_selected</string>
     <string name="IS_TWO_PANE">isTwoPane</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-
 
     <!-- SharedPreferences Strings -->
     <string name="SHARED_PREFERENCES">shared_key</string>
     <string name="recipe_pref_name">recipe_name</string>
     <string name="recipe_pref_id">recipe_id</string>
     <string name="recipe_pref_key">recipe</string>
+    <string name="no_recipe_image">No recipe image</string>
+    <string name="fullscreen_icon">Fullscreen Icon</string>
 </resources>

@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class RecipeRepository {
 
     private static WebService service;
-    private static MutableLiveData<List<Recipe>> recipeList = new MutableLiveData<>();
+    private final static MutableLiveData<List<Recipe>> recipeList = new MutableLiveData<>();
 
     private static RecipeRepository repository;
 
@@ -39,7 +39,7 @@ public class RecipeRepository {
             }
 
             @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+            public void onFailure( Call<List<Recipe>> call, Throwable t) {
                 recipeList.setValue(null);
                 t.printStackTrace();
             }

@@ -15,14 +15,13 @@ import java.util.List;
 
 public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private Context mContext;
+    private final Context mContext;
     private Recipe mRecipe;
     private List<Ingredient> mIngredientsList = new ArrayList<>();
-    private int appWidgetId;
 
     public WidgetRemoteViewsFactory(Context context, Intent intent) {
         this.mContext = context;
-        appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 

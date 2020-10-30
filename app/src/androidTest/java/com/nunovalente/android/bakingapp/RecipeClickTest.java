@@ -27,7 +27,7 @@ public class RecipeClickTest {
     private IdlingResource mIdlingResource;
 
     @Rule
-    public ActivityScenarioRule<RecipeListActivity> mActivityScenario = new ActivityScenarioRule<>(RecipeListActivity.class);
+    public final ActivityScenarioRule<RecipeListActivity> mActivityScenario = new ActivityScenarioRule<>(RecipeListActivity.class);
 
     @Before
     public void registerIdlingResource() {
