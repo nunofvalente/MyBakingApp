@@ -1,19 +1,21 @@
 package com.nunovalente.android.bakingapp.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.IdlingResource;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.nunovalente.android.bakingapp.adapter.RecyclerClickListener;
 import com.nunovalente.android.bakingapp.databinding.ActivityMainBinding;
 import com.nunovalente.android.bakingapp.model.Recipe;
 import com.nunovalente.android.bakingapp.util.NetworkUtils;
+import com.nunovalente.android.bakingapp.util.SimpleIdlingResource;
 import com.nunovalente.android.bakingapp.viewmodel.RecipeViewModel;
 import com.nunovalente.android.bakingapp.widget.IngredientService;
 
@@ -36,9 +39,20 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
 
     private List<Recipe> mRecipeList = new ArrayList<>();
     private RecipeAdapter mAdapter;
-    private SharedPreferences prefs;
 
     private ActivityMainBinding mBinding;
+
+    @Nullable
+    private static SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public static IdlingResource getIdlingResource() {
+        if(mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
 
 
     @Override
@@ -55,6 +69,8 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
         } else {
             showConnectivityError();
         }
+
+        getIdlingResource();
     }
 
     @Override
@@ -115,7 +131,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerCli
     public void onClick(int position) {
         Recipe recipe = mRecipeList.get(position);
 
-        prefs = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         Gson gson = new Gson();

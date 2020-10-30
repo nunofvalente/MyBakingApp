@@ -1,15 +1,8 @@
 package com.nunovalente.android.bakingapp.model;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
-
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(tableName = "recipes")
 public class Recipe implements Serializable {
 
     /**
@@ -21,32 +14,12 @@ public class Recipe implements Serializable {
      * image :
      */
 
-    public static final String RECIPE_ID = "id";
-    public static final String RECIPE_NAME = "name";
-    public static final String RECIPE_SERVINGS = "servings";
-    public static final String RECIPE_IMAGE = "image";
-    public static final String RECIPE_INGREDIENTS = "ingredients";
-    public static final String RECIPE_STEPS = "steps";
-
-    @PrimaryKey
-    @ColumnInfo(name = RECIPE_ID)
     private int id;
-
-    @ColumnInfo(name = RECIPE_NAME)
     private String name;
-
-    @ColumnInfo(name = RECIPE_SERVINGS)
     private int servings;
-
-    @ColumnInfo(name = RECIPE_IMAGE)
     private String image;
-
-    @ColumnInfo(name = RECIPE_INGREDIENTS)
     private List<Ingredient> ingredients;
-
-    @ColumnInfo(name = RECIPE_STEPS)
     private List<Step> steps;
-
 
     public Recipe(int id, String name, int servings, String image, List<Ingredient> ingredients, List<Step> steps) {
         this.id = id;
@@ -57,7 +30,7 @@ public class Recipe implements Serializable {
         this.steps = steps;
     }
 
-    @Ignore
+  //  @Ignore
     public Recipe() {
     }
 
